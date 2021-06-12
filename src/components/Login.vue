@@ -3,12 +3,23 @@
   <el-button @click="goHome">回首頁</el-button>
 </template>
 
-<script setup>
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-const goHome = () => {
-  router.push('/')
+<script>
+export default {
+  name: 'Login',
+  async mounted() {
+    // const res = await this.$request({
+    //   method: 'get',
+    //   url: '/login',
+    //   data: { username: 'mars' }
+    // })
+    const res = await this.$request.get('/login', { username: 'mars' })
+    console.log(res)
+  },
+  methods: {
+    goHome() {
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 

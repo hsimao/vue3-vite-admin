@@ -3,13 +3,10 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 import App from './App.vue'
-import axios from 'axios'
-import config from './config'
+import request from './api/request'
 
-axios.get(config.mockApi + '/login').then((res) => {
-  console.log('api res', res)
-})
+const app = createApp(App)
 
-console.log(import.meta.env)
+app.config.globalProperties.$request = request
 
-createApp(App).use(router).use(ElementPlus).mount('#app')
+app.use(router).use(ElementPlus).mount('#app')
