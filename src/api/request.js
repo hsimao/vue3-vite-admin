@@ -20,20 +20,21 @@ service.interceptors.request.use((req) => {
 })
 
 service.interceptors.response.use((res) => {
-  const { code, data, msg } = res.data
-
-  switch (code) {
+  switch (res.data.code) {
     case 200:
-      return data
+      return res.data
+
+    // 請求失敗一律調用成功 resolve, 即可省略 try catch, 或 .catch 語法
+    // 調用時可直接判斷 code 或 data 是否有值來判斷是否成功
     case 40001:
       ElMessage.error(TOKEN_INVALID)
       setTimeout(() => {
         router.push('/login')
       }, 1500)
-      return Promise.reject(TOKEN_INVALID)
+      return Promise.resolve(res.data || {})
     default:
-      ElMessage.error(msg || NETWORK_ERROR)
-      return Promise.reject(msg || NETWORK_ERROR)
+      ElMessage.error(res.data.msg || NETWORK_ERROR)
+      return Promise.resolve(res.data || {})
   }
 })
 
