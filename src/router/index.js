@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from './../components/Home.vue'
+import AdminLayout from './../components/Layout/AdminLayout.vue'
 import Welcome from './../components/Welcome.vue'
 import Login from './../components/Login.vue'
 
@@ -7,7 +7,7 @@ const routes = [
   {
     name: 'home',
     path: '/',
-    component: Home,
+    component: AdminLayout,
     redirect: '/welcome',
     meta: {
       title: '首頁'
