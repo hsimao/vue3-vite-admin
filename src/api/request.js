@@ -1,6 +1,7 @@
 import axios from 'axios'
 import config from '../config'
 import router from '../router'
+import { hasProperty } from '../utils'
 import { ElMessage } from 'element-plus'
 
 const TOKEN_INVALID = 'Token 認證失敗, 請重新登入'
@@ -44,6 +45,11 @@ const request = (options) => {
   if (options.method.toLowerCase() === 'get') {
     options.params = options.data
     delete options.data
+  }
+
+  // 提供單獨設定某 api mock 為 false 的情境
+  if (hasProperty(options, 'mock')) {
+    service.defaults.baseURL = options.mock ? config.mockApi : config.baseApi
   }
 
   return service(options)

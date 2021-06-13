@@ -14,6 +14,7 @@ export default defineConfig({
         // 全域引入 variable
         additionalData: `
           @import "./src/assets/style/variable.scss";
+          @import "./src/assets/style/mixins.scss";
         `
       }
     }
