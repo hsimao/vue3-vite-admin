@@ -19,5 +19,6 @@ const EnvConfig = {
 export default {
   env,
   mock: true,
+  storageNamespace: 'admin-v1',
   ...EnvConfig[env]
 }
