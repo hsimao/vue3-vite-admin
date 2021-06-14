@@ -27,7 +27,7 @@ service.interceptors.response.use((res) => {
 
     // 請求失敗一律調用成功 resolve, 即可省略 try catch, 或 .catch 語法
     // 調用時可直接判斷 code 或 data 是否有值來判斷是否成功
-    case 40001:
+    case 50001:
       ElMessage.error(TOKEN_INVALID)
       setTimeout(() => {
         router.push('/login')

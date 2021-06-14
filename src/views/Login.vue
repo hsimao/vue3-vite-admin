@@ -74,8 +74,6 @@ export default {
           store.commit('setUserInfo', data)
           ElMessage.success('登入成功！')
           router.push('/welcome')
-        } else {
-          ElMessage.error('帳號或密碼錯誤！')
         }
       })
     }
