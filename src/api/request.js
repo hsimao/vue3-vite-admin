@@ -1,7 +1,7 @@
 import axios from 'axios'
-import config from '../config'
-import router from '../router'
-import { hasProperty } from '../utils'
+import config from '@/config'
+import router from '@/router'
+import { hasProperty } from '@/utils'
 import { ElMessage } from 'element-plus'
 
 const TOKEN_INVALID = 'Token 認證失敗, 請重新登入'

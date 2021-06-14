@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import AdminLayout from './../components/Layout/AdminLayout.vue'
+import AdminLayout from '@/components/Layout/AdminLayout.vue'
 
 const routes = [
   {
@@ -14,7 +14,7 @@ const routes = [
       {
         name: 'welcome',
         path: '/welcome',
-        component: () => import('../views/Welcome.vue'),
+        component: () => import('@/views/Welcome.vue'),
         meta: {
           title: '歡迎頁'
         }
@@ -24,7 +24,7 @@ const routes = [
   {
     name: 'login',
     path: '/login',
-    component: () => import('../views/Login.vue'),
+    component: () => import('@/views/Login.vue'),
     meta: {
       title: '登入'
     }

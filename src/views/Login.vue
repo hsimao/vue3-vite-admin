@@ -33,7 +33,7 @@
 import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import $api from '../api'
+import $api from '@/api'
 import { ElMessage } from 'element-plus'
 
 export default {

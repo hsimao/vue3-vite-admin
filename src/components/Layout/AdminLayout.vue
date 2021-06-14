@@ -36,7 +36,7 @@ export default {
     overflow-y: hidden auto;
     width: 200px;
     height: 100vh;
-    background-color: $colorPrimary;
+    background-color: $colorBg;
     transition: width 0.5s;
   }
 
