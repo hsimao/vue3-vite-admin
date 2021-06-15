@@ -1,15 +1,12 @@
 <template>
   <div class="basic-layout">
     <!-- 左側邊欄 -->
-    <div class="nav-side"></div>
+    <SideMenu :isCollapse="isCollapse" />
 
     <!-- 右側內容區 -->
-    <div class="content-right">
+    <div class="content-right" :class="collapseClass">
       <!-- 內容區上方 麵包屑導航、用戶資訊顯示 bar -->
-      <div class="nav-top">
-        <div class="bread">麵包屑</div>
-        <div class="user-info">用戶</div>
-      </div>
+      <Navbar @toggle="isCollapse = !isCollapse" />
 
       <!-- 每頁內容區 -->
       <div class="wrapper">
@@ -22,8 +19,17 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+
 export default {
-  name: 'AdminLayout'
+  name: 'AdminLayout',
+  setup() {
+    const isCollapse = ref(false)
+
+    const collapseClass = computed(() => (isCollapse.value ? 'collapse' : ''))
+
+    return { isCollapse, collapseClass }
+  }
 }
 </script>
 
@@ -31,17 +37,12 @@ export default {
 .basic-layout {
   position: relative;
 
-  .nav-side {
-    position: fixed;
-    overflow-y: hidden auto;
-    width: 200px;
-    height: 100vh;
-    background-color: $colorBg;
-    transition: width 0.5s;
-  }
-
   .content-right {
     margin-left: 200px;
+
+    &.collapse {
+      margin-left: 64px;
+    }
 
     .nav-top {
       display: flex;
