@@ -7,34 +7,20 @@
 
     <el-menu
       class="side-menu"
-      default-active="2"
+      :default-active="activeMenu"
       background-color="#001529"
       text-color="#ffffff"
       router
       :collapse="isCollapse"
     >
-      <el-submenu index="1">
-        <template #title>
-          <i class="el-icon-setting" />
-          <span>系統管理</span>
-        </template>
-        <el-menu-item index="1-1">用戶管理</el-menu-item>
-        <el-menu-item index="1-2">選單管理</el-menu-item>
-      </el-submenu>
-      <el-submenu index="2">
-        <template #title>
-          <i class="el-icon-setting" />
-          <span>審核管理</span>
-        </template>
-        <el-menu-item index="2-1">休假申請</el-menu-item>
-        <el-menu-item index="2-2">待我審核</el-menu-item>
-      </el-submenu>
+      <TreeMenu :items="userMenu" />
     </el-menu>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import $api from '@/api'
 
 export default {
   name: 'SideMenu',
@@ -45,11 +31,22 @@ export default {
     }
   },
   setup(props) {
-    console.log('props', props)
+    const userMenu = ref([])
+    const activeMenu = ref(location.hash.slice(1))
 
     const collapseClass = computed(() => (props.isCollapse ? 'collapse' : ''))
 
-    return { collapseClass }
+    onMounted(() => {
+      getMenuList()
+    })
+    const getMenuList = async () => {
+      const { data } = await $api.getMenuList()
+      if (data) {
+        userMenu.value = data
+      }
+    }
+
+    return { activeMenu, userMenu, collapseClass }
   }
 }
 </script>

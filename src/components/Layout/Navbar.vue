@@ -5,18 +5,20 @@
       <span class="navbar-bread-text">麵包屑</span>
     </div>
     <div class="navbar-user-info">
-      <el-badge class="navbar-notice" type="danger" :is-dot="true">
+      <el-badge class="navbar-notice" type="danger" :value="noticeCount">
         <i class="el-icon-bell" />
       </el-badge>
 
       <el-dropdown @command="handlLogout" v-if="userInfo">
         <span class="navbar-user-link">
-          {{userInfo.userName}}
+          {{ userInfo.userName }}
           <i class="el-icon--right" />
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="email">Eamil: {{userInfo.userEmail}}</el-dropdown-item>
+            <el-dropdown-item command="email"
+              >Eamil: {{ userInfo.userEmail }}</el-dropdown-item
+            >
             <el-dropdown-item command="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -27,6 +29,7 @@
 
 <script>
 import { ref, onMounted } from 'vue'
+import $api from '@/api'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -34,15 +37,24 @@ export default {
   name: 'Navbar',
   setup() {
     const userInfo = ref(null)
+    const noticeCount = ref(0)
 
     const store = useStore()
     const router = useRouter()
 
     onMounted(() => {
       userInfo.value = store.state.userInfo
+      getNoticeCount()
     })
 
-    const handlLogout = command => {
+    const getNoticeCount = async () => {
+      const { data } = await $api.getNoticeCount()
+      if (data) {
+        noticeCount.value = data
+      }
+    }
+
+    const handlLogout = (command) => {
       if (command === 'logout') {
         store.commit('setUserInfo', '')
         userInfo.value = null
@@ -52,7 +64,8 @@ export default {
 
     return {
       userInfo,
-      handlLogout
+      handlLogout,
+      noticeCount
     }
   }
 }
