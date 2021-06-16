@@ -13,7 +13,7 @@ const routes = [
     children: [
       {
         name: 'welcome',
-        path: '/welcome',
+        path: 'welcome',
         component: () => import('@/views/Welcome.vue'),
         meta: {
           title: '歡迎頁'

@@ -2,7 +2,7 @@
   <div class="navbar">
     <div class="navbar-bread">
       <i class="el-icon-s-fold" @click="$emit('toggle')" />
-      <span class="navbar-bread-text">麵包屑</span>
+      <Breadcrumb />
     </div>
     <div class="navbar-user-info">
       <el-badge class="navbar-notice" type="danger" :value="noticeCount">
@@ -81,25 +81,25 @@ export default {
   line-height: 50px;
 
   .navbar-bread {
-    i {
-      font-size: 18px;
-    }
+    display: flex;
+    align-items: center;
 
-    .navbar-bread-text {
-      margin-left: 16px;
+    i {
+      margin-right: 16px;
+      font-size: 18px;
     }
   }
 
   .navbar-user-info {
     .navbar-notice {
-      line-height: 30px;
       margin-right: 16px;
+      line-height: 30px;
     }
   }
 
   .navbar-user-link {
-    cursor: pointer;
     color: $colorPrimary;
+    cursor: pointer;
   }
 }
 </style>
