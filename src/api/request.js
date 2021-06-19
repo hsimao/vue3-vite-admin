@@ -32,8 +32,8 @@ service.interceptors.response.use(
 )
 
 const mockSetting = (options) => {
-  const hasMockProperty = options.data && hasProperty(options.data, 'mock')
-  const isMock = hasMockProperty && options.data.mock
+  const hasMockProperty = hasProperty(options, 'mock')
+  const isMock = hasMockProperty && options.mock
 
   // api 有獨立配置 mock 屬性才需進入此判斷, 否則預設使用初始的 config.baseApi
   if (hasMockProperty) {
@@ -70,8 +70,8 @@ request.get('login', params, options)
 request.post('login', data, options)
 */
 ;['get', 'post', 'put', 'delete', 'patch'].forEach((method) => {
-  request[method] = (url, data, options) => {
-    return request({ url, data, method, ...options })
+  request[method] = (url, data, otherOptions) => {
+    return request({ url, data, method, ...otherOptions })
   }
 })
 
