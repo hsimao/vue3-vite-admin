@@ -18,6 +18,7 @@ export default {
 <style lang="scss" scoped>
 .welcome {
   height: 100%;
+  background-color: $colorWhite;
 
   @include flexCenter;
 

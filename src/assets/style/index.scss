@@ -55,28 +55,3 @@ a {
   margin-left: 15px;
   color: #787878;
 }
-
-/*
-* 公共样式
-*/
-.query-form {
-  padding: 22px 20px 0;
-  border-radius: 5px;
-  background-color: #ffffff;
-}
-.base-table {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  background: #ffffff;
-  .action {
-    padding: 20px;
-    border-bottom: 1px solid #ece8e8;
-    border-radius: 5px 5px 0px 0px;
-    background: #ffffff;
-  }
-  .pagination {
-    padding: 10px;
-    text-align: right;
-  }
-}

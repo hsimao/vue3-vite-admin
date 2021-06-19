@@ -10,9 +10,7 @@
 
       <!-- 每頁內容區 -->
       <div class="wrapper">
-        <div class="main-page">
-          <router-view />
-        </div>
+        <router-view />
       </div>
     </div>
   </div>
@@ -58,12 +56,6 @@ export default {
       //  50px(nav-side 高度)
       height: calc(100vh - 50px);
       background-color: $colorGray;
-
-      .main-page {
-        padding: 20px;
-        height: 100%;
-        background-color: $colorWhite;
-      }
     }
   }
 }
