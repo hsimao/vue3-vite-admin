@@ -5,9 +5,9 @@ export default {
     return request.post('users/login', data)
   },
   getNoticeCount() {
-    return request.get('leave/count')
+    return request.get('leave/count', { mock: true })
   },
   getMenuList() {
-    return request.get('menu/list')
+    return request.get('menu/list', { mock: true })
   }
 }

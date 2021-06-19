@@ -31,17 +31,27 @@ service.interceptors.response.use(
   }
 )
 
+const mockSetting = (options) => {
+  const hasMockProperty = options.data && hasProperty(options.data, 'mock')
+  const isMock = hasMockProperty && options.data.mock
+
+  // api 有獨立配置 mock 屬性才需進入此判斷, 否則預設使用初始的 config.baseApi
+  if (hasMockProperty) {
+    service.defaults.baseURL = isMock ? config.mockApi : config.baseApi
+  } else {
+    service.defaults.baseURL = config.baseApi
+  }
+}
+
 const request = (options) => {
   options.method = options.method || 'get'
+
+  // 提供單獨設定某 api mock 為 false 的情境
+  mockSetting(options)
 
   if (options.method.toLowerCase() === 'get') {
     options.params = options.data
     delete options.data
-  }
-
-  // 提供單獨設定某 api mock 為 false 的情境
-  if (hasProperty(options, 'mock')) {
-    service.defaults.baseURL = options.mock ? config.mockApi : config.baseApi
   }
 
   return service(options)
