@@ -17,42 +17,50 @@
       <!-- action -->
       <el-table-column label="操作" width="150">
         <template #default="scope">
-          <el-button size="mini" @click="handleEdit(scope)"> 編輯 </el-button>
+          <el-button size="mini" @click="handleEdit(scope)">編輯</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope)">
             刪除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分頁 -->
+    <el-pagination
+      class="base-table-pagination"
+      background
+      layout="prev, pager, next"
+      :page-size="pager.pageSize"
+      :total="pager.total"
+      :current-page="pager.pageNum"
+      @current-change="handlePageChange"
+    />
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 export default {
   name: 'BaseTable',
-  setup() {
-    const tableData = ref([
-      {
-        state: 1,
-        role: '0',
-        roleList: [
-          '60180b07b1eaed6c45fbebdb',
-          '60150cb764de99631b2c3cd3',
-          '60180b59b1eaed6c45fbebdc'
-        ],
-        deptId: ['60167059c9027b7d2c520a61', '60167345c6a4417f2d27506f'],
-        userId: 1000002,
-        userName: 'admin',
-        userEmail: 'admin@imooc.com',
-        createTime: '2021-01-17T13:32:06.381Z',
-        lastLoginTime: '2021-01-17T13:32:06.381Z',
-        __v: 0,
-        job: '前端架构师',
-        mobile: '17611020000'
+  props: {
+    items: {
+      type: Array,
+      default: () => []
+    },
+    pager: {
+      type: Object,
+      default: () => {
+        return {
+          pageNum: 1,
+          pageSize: 10,
+          total: 1
+        }
       }
-    ])
+    }
+  },
+  emits: ['pageChange'],
+  setup(props, { emit }) {
     const columns = [
       { label: 'ID', prop: 'userId' },
       { label: '用戶名', prop: 'userName' },
@@ -63,7 +71,13 @@ export default {
       { label: '最後登入時間', prop: 'lastLoginTime' }
     ]
 
-    return { tableData, columns }
+    const tableData = computed(() => props.items)
+
+    const handlePageChange = (page) => {
+      emit('pageChange', page)
+    }
+
+    return { tableData, columns, handlePageChange }
   }
 }
 </script>
