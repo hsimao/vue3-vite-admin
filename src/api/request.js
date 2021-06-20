@@ -4,8 +4,10 @@ import storage from '@/utils/storage'
 import { hasProperty } from '@/utils'
 import errorHandler from './errorHandler'
 
+const isProd = config.env === 'production'
+
 const service = axios.create({
-  baseURL: config.mock ? config.mockApi : config.baseApi,
+  baseURL: config.mock && !isProd ? config.mockApi : config.baseApi,
   timeout: 8000
 })
 
@@ -47,7 +49,7 @@ const request = (options) => {
   options.method = options.method || 'get'
 
   // 提供單獨設定某 api mock 為 false 的情境
-  mockSetting(options)
+  if (!isProd) mockSetting(options)
 
   if (options.method.toLowerCase() === 'get') {
     options.params = options.data
