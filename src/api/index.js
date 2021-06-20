@@ -1,11 +1,10 @@
 import request from './request'
+import users from './users'
 
 export default {
+  ...users,
   login(data) {
     return request.post('users/login', data)
-  },
-  getUserList(data) {
-    return request.get('users/list', data, { mock: true })
   },
   getNoticeCount() {
     return request.get('leave/count', {}, { mock: true })

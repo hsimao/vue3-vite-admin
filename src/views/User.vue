@@ -4,7 +4,12 @@
     <FilterTools @query="handleQuery" />
 
     <!-- table list -->
-    <BaseTable :items="userList" :pager="pager" @pageChange="updatePage" />
+    <BaseTable
+      :items="userList"
+      :pager="pager"
+      @pageChange="updatePage"
+      @delete="deleteUsers"
+    />
   </div>
 </template>
 
@@ -12,6 +17,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import $api from '@/api'
 import { PAGE_SIZE } from '@/utils/constant.js'
+import { ElMessage } from 'element-plus'
 
 export default {
   name: 'User',
@@ -61,7 +67,18 @@ export default {
       getUserList({ ...cacheParams, pageNum: page })
     }
 
-    return { userList, pager, handleQuery, updatePage }
+    const deleteUsers = async (userIds) => {
+      const { data, msg } = await $api.deleteUsers(userIds)
+
+      if (data?.modified >= 1) {
+        ElMessage.success(msg)
+        handleQuery(cacheParams)
+      } else {
+        ElMessage.error(msg)
+      }
+    }
+
+    return { userList, pager, handleQuery, updatePage, deleteUsers }
   }
 }
 </script>
