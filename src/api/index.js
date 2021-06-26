@@ -11,5 +11,11 @@ export default {
   },
   getMenuList() {
     return request.get('menu/list', {}, { mock: true })
+  },
+  getRoleList() {
+    return request.get('roles/list', {}, { mock: true })
+  },
+  getDeptList() {
+    return request.get('dept/list', {}, { mock: true })
   }
 }

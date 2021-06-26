@@ -1,4 +1,5 @@
 export const PAGE_SIZE = 10
+export const EMAIL_SUFFIX = '@gmail.com'
 
 export const USER_ROLE_MAP = {
   0: '管理員',

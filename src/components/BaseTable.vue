@@ -1,7 +1,7 @@
 <template>
   <div class="base-table">
     <div class="base-table-action">
-      <el-button type="primary">新增</el-button>
+      <el-button type="primary" @click="$emit('showDialog')">新增</el-button>
       <el-button type="danger" @click="handleDeletePatch">批量刪除</el-button>
     </div>
     <el-table
@@ -65,7 +65,7 @@ export default {
       }
     }
   },
-  emits: ['pageChange', 'delete', 'edit'],
+  emits: ['pageChange', 'delete', 'edit', 'showDialog'],
   setup(props, { emit }) {
     const columns = [
       { label: 'ID', prop: 'userId' },
@@ -109,7 +109,6 @@ export default {
     const handleEdit = (item) => {
       console.log('handleEdit', item)
     }
-
     return {
       tableData,
       columns,

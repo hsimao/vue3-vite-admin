@@ -8,7 +8,13 @@
       :items="userList"
       :pager="pager"
       @pageChange="updatePage"
+      @showDialog="updateShowDialog(true)"
       @delete="deleteUsers"
+    />
+    <UserCreateDialog
+      :active="showDialog"
+      @success="getUserListByCache"
+      @close="updateShowDialog(false)"
     />
   </div>
 </template>
@@ -23,6 +29,7 @@ export default {
   name: 'User',
   setup() {
     const userList = ref([])
+    const showDialog = ref(false)
     let cacheParams = reactive({})
     const pager = reactive({
       pageNum: 1,
@@ -67,6 +74,10 @@ export default {
       getUserList({ ...cacheParams, pageNum: page })
     }
 
+    const getUserListByCache = () => {
+      getUserList({ ...cacheParams })
+    }
+
     const deleteUsers = async (userIds) => {
       const { data, msg } = await $api.deleteUsers(userIds)
 
@@ -78,7 +89,20 @@ export default {
       }
     }
 
-    return { userList, pager, handleQuery, updatePage, deleteUsers }
+    const updateShowDialog = (status) => {
+      showDialog.value = status
+    }
+
+    return {
+      showDialog,
+      userList,
+      pager,
+      handleQuery,
+      updatePage,
+      deleteUsers,
+      updateShowDialog,
+      getUserListByCache
+    }
   }
 }
 </script>
