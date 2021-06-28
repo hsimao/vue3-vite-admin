@@ -107,8 +107,9 @@ export default {
     }
 
     const handleEdit = (item) => {
-      console.log('handleEdit', item)
+      emit('edit', item)
     }
+
     return {
       tableData,
       columns,

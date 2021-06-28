@@ -1,12 +1,21 @@
 <template>
   <el-dialog :model-value="active" title="新增用戶" @close="$emit('close')">
     <el-form ref="formRef" :model="userForm" :rules="rules" label-width="100px">
+      <pre>{{ isEdit }}</pre>
       <el-form-item label="用戶名" prop="userName">
-        <el-input v-model="userForm.userName" placeholder="請輸入用戶名稱" />
+        <el-input
+          v-model="userForm.userName"
+          placeholder="請輸入用戶名稱"
+          :disabled="isEdit"
+        />
       </el-form-item>
 
       <el-form-item label="信箱" prop="userEmail">
-        <el-input v-model="userForm.userEmail" placeholder="請輸入信箱">
+        <el-input
+          v-model="userForm.userEmail"
+          placeholder="請輸入信箱"
+          :disabled="isEdit"
+        >
           <template #append>@gmail.com</template>
         </el-input>
       </el-form-item>
@@ -30,18 +39,18 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="系統角色" prop="ruleList">
+      <el-form-item label="系統角色" prop="roleList">
         <el-select
-          v-model="userForm.ruleList"
+          v-model="userForm.roleList"
           multiple
           placeholder="請選擇用戶的系統角色"
           style="width: 100%"
         >
           <el-option
-            v-for="rule in ruleList"
-            :key="rule._id"
-            :value="rule._id"
-            :label="rule.roleName"
+            v-for="role in roleList"
+            :key="role._id"
+            :value="role._id"
+            :label="role.roleName"
           />
         </el-select>
       </el-form-item>
@@ -72,7 +81,7 @@
 
 <script>
 import { USER_STATE_MAP, EMAIL_SUFFIX } from '@/utils/constant'
-import { ref, reactive, computed, onMounted, toRaw } from 'vue'
+import { ref, reactive, computed, watch, onMounted, toRaw } from 'vue'
 import $api from '@/api'
 import { ElMessage } from 'element-plus'
 
@@ -82,6 +91,10 @@ export default {
     active: {
       type: Boolean,
       default: false
+    },
+    userData: {
+      type: Object,
+      default: () => {}
     }
   },
   emits: ['close', 'success'],
@@ -90,20 +103,20 @@ export default {
     const loading = ref(false)
     const stateList = computed(() => {
       return Object.keys(USER_STATE_MAP).map((key) => ({
-        id: key,
+        id: parseInt(key),
         value: USER_STATE_MAP[key]
       }))
     })
 
     const deptList = ref([])
-    const ruleList = ref([])
+    const roleList = ref([])
     const userForm = reactive({
       userName: '',
       userEmail: '',
       mobile: '',
       job: '',
       state: stateList.value[2].id,
-      ruleList: [],
+      roleList: [],
       deptId: []
     })
 
@@ -138,6 +151,31 @@ export default {
       ]
     }
 
+    const isEdit = computed(() => !!userForm.userId)
+
+    watch(
+      () => props.userData,
+      (userData) => {
+        updateUserForm(userData)
+      }
+    )
+
+    const updateUserForm = (userData) => {
+      if (Object.keys(userData).length) {
+        Object.assign(userForm, userData)
+        return
+      }
+      initUserForm()
+    }
+
+    const initUserForm = () => {
+      formRef.value.resetFields()
+      delete userForm.userId
+      delete userForm.createTime
+      delete userForm.lastLoginTime
+      delete userForm.__v
+    }
+
     const getDeptList = async () => {
       const { data } = await $api.getDeptList()
       if (data && data.length) {
@@ -148,7 +186,7 @@ export default {
     const getRoleList = async () => {
       const { data } = await $api.getRoleList()
       if (data && data.length) {
-        ruleList.value = data
+        roleList.value = data
       }
     }
 
@@ -187,9 +225,10 @@ export default {
       formRef,
       loading,
       userForm,
+      isEdit,
       stateList,
       deptList,
-      ruleList,
+      roleList,
       rules,
       handleCancel,
       handleSubbmit,

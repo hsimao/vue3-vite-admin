@@ -9,10 +9,12 @@
       :pager="pager"
       @pageChange="updatePage"
       @showDialog="updateShowDialog(true)"
+      @edit="updateSelectUser"
       @delete="deleteUsers"
     />
-    <UserCreateDialog
+    <UserDialog
       :active="showDialog"
+      :userData="selectedUser"
       @success="getUserListByCache"
       @close="updateShowDialog(false)"
     />
@@ -20,7 +22,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, watch, onMounted } from 'vue'
 import $api from '@/api'
 import { PAGE_SIZE } from '@/utils/constant.js'
 import { ElMessage } from 'element-plus'
@@ -29,11 +31,18 @@ export default {
   name: 'User',
   setup() {
     const userList = ref([])
+    const selectedUser = ref({})
     const showDialog = ref(false)
     let cacheParams = reactive({})
     const pager = reactive({
       pageNum: 1,
       pageSize: PAGE_SIZE
+    })
+
+    watch(showDialog, (val) => {
+      if (!val) {
+        initSelectUser()
+      }
     })
 
     onMounted(() => {
@@ -93,14 +102,25 @@ export default {
       showDialog.value = status
     }
 
+    const updateSelectUser = (userData) => {
+      selectedUser.value = userData
+      updateShowDialog(true)
+    }
+
+    const initSelectUser = () => {
+      selectedUser.value = {}
+    }
+
     return {
       showDialog,
+      selectedUser,
       userList,
       pager,
       handleQuery,
       updatePage,
       deleteUsers,
       updateShowDialog,
+      updateSelectUser,
       getUserListByCache
     }
   }
