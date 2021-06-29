@@ -16,6 +16,7 @@
         :key="column.userId"
         :prop="column.prop"
         :label="column.label"
+        :width="column.width"
         :formatter="column.formatter"
       />
 
@@ -46,6 +47,8 @@
 <script>
 import { ref, computed } from 'vue'
 import { USER_ROLE_MAP, USER_STATE_MAP } from '@/utils/constant'
+// import moment from '@/utils/moment'
+import { formatDate } from '@/utils'
 
 export default {
   name: 'BaseTable',
@@ -68,13 +71,23 @@ export default {
   emits: ['pageChange', 'delete', 'edit', 'showDialog'],
   setup(props, { emit }) {
     const columns = [
-      { label: 'ID', prop: 'userId' },
-      { label: '用戶名', prop: 'userName' },
+      { label: 'ID', prop: 'userId', width: 100 },
+      { label: '用戶名', prop: 'userName', width: 150 },
       { label: 'Email', prop: 'userEmail' },
       { label: '角色', prop: 'role', formatter: formatRole },
       { label: '狀態', prop: 'state', formatter: formatState },
-      { label: '註冊時間', prop: 'createTime' },
-      { label: '最後登入時間', prop: 'lastLoginTime' }
+      {
+        label: '註冊時間',
+        prop: 'createTime',
+        width: '150',
+        formatter: formatTime
+      },
+      {
+        label: '最後登入時間',
+        prop: 'lastLoginTime',
+        width: '150',
+        formatter: formatTime
+      }
     ]
     const selectedUserIds = ref([])
 
@@ -86,6 +99,11 @@ export default {
 
     function formatState(row, column, val) {
       return USER_STATE_MAP[val]
+    }
+
+    function formatTime(row, column, val) {
+      if (!val) return ''
+      return formatDate(val)
     }
 
     const handlePageChange = (page) => {
