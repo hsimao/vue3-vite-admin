@@ -5,10 +5,6 @@ import router from '@/router'
 const TOKEN_INVALID = 'Token 認證失敗, 請重新登入'
 const NETWORK_ERROR = '網路請求異常，請稍後重試'
 
-const makeErrorData = (res) => {
-  return { data: res.data }
-}
-
 const debounceMessage = debounce(300, (message) => {
   ElMessage.error(message)
 })
@@ -20,9 +16,9 @@ export default function (res) {
       setTimeout(() => {
         router.push('/login')
       }, 1500)
-      return makeErrorData(res)
+      return res
     default:
       debounceMessage(res.msg || NETWORK_ERROR)
-      return makeErrorData(res)
+      return res
   }
 }

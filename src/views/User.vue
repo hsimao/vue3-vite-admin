@@ -90,11 +90,10 @@ export default {
     const deleteUsers = async (userIds) => {
       const { data, msg } = await $api.deleteUsers(userIds)
 
-      if (data?.modified >= 1) {
+      if (data?.nModified >= 1) {
         ElMessage.success(msg)
+        getUserListByCache()
         handleQuery(cacheParams)
-      } else {
-        ElMessage.error(msg)
       }
     }
 

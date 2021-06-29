@@ -24,7 +24,12 @@
       <el-table-column label="操作" width="150">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">編輯</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">
+          <el-button
+            v-if="showDelete(scope.row)"
+            type="danger"
+            size="mini"
+            @click="handleDelete(scope.row)"
+          >
             刪除
           </el-button>
         </template>
@@ -47,7 +52,6 @@
 <script>
 import { ref, computed } from 'vue'
 import { USER_ROLE_MAP, USER_STATE_MAP } from '@/utils/constant'
-// import moment from '@/utils/moment'
 import { formatDate } from '@/utils'
 
 export default {
@@ -114,6 +118,10 @@ export default {
       emit('delete', [item.userId])
     }
 
+    const showDelete = (item) => {
+      return item.state !== 2
+    }
+
     const handleSelectionChange = (selections) => {
       selectedUserIds.value = selections.map((userInfo) => userInfo.userId)
     }
@@ -133,6 +141,7 @@ export default {
       columns,
       handlePageChange,
       handleSelectionChange,
+      showDelete,
       handleDelete,
       handleDeletePatch,
       handleEdit
