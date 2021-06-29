@@ -205,11 +205,16 @@ export default {
     const handleSubbmit = () => {
       formRef.value.validate(async (valid) => {
         if (!valid) return
+
+        const params = getParams()
+        const api = params.userId ? $api.editUser : $api.createUser
+
         loading.value = true
-        const res = await $api.createUser(getParams())
+        const res = await api(getParams())
         loading.value = false
+
         if (res.data) {
-          ElMessage.success('成功新增用戶')
+          ElMessage.success(res.msg)
           handleCancel()
           emit('success')
         }
