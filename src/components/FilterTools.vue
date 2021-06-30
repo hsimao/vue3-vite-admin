@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 export default {
   name: 'FilterTools',
   emits: ['query'],
@@ -40,8 +40,10 @@ export default {
     const query = reactive({
       userId: '',
       userName: '',
-      state: 0
+      state: 1
     })
+
+    onMounted(() => handleQuery())
 
     const handleQuery = () => {
       emit('query', query)

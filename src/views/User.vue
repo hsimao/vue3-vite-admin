@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { ref, reactive, watch, onMounted } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import $api from '@/api'
 import { PAGE_SIZE } from '@/utils/constant.js'
 import { ElMessage } from 'element-plus'
@@ -43,10 +43,6 @@ export default {
       if (!val) {
         initSelectUser()
       }
-    })
-
-    onMounted(() => {
-      getUserList()
     })
 
     const getUserList = async (query = false) => {
